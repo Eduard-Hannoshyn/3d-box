@@ -1,0 +1,292 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+body {
+    margin: 0;
+    height: 100vh;
+    height: 100svh;
+    font-family: sans-serif;
+}
+
+#app {
+    width: 80%;
+    margin: auto;
+    padding: 8px;
+}
+
+.file {
+    margin-bottom: 10px;
+}
+
+.item-centered {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.container {
+    margin: 30px 0;
+}
+
+.scene {
+    width: 500px;
+    height: 500px;
+    cursor: -webkit-grab;
+    cursor: grab;
+    border: 1px solid #ccc;
+    -webkit-perspective: 800px;
+    perspective: 800px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -ms-touch-action: none;
+    touch-action: none
+}
+
+.box {
+    width: 300px;
+    height: 300px;
+    position: relative;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-transform: translateZ(-50px);
+    transform: translateZ(-50px);
+    /*transition: transform 0.15s;*/
+    pointer-events: none;
+}
+
+.box.show-front {
+    -webkit-transform: translateZ(-50px) rotateY(0deg);
+    transform: translateZ(-50px) rotateY(0deg);
+}
+
+.box.show-back {
+    -webkit-transform: translateZ(-50px) rotateY(-180deg);
+    transform: translateZ(-50px) rotateY(-180deg);
+}
+
+.box.show-right {
+    -webkit-transform: translateZ(-150px) rotateY(-90deg);
+    transform: translateZ(-150px) rotateY(-90deg);
+}
+
+.box.show-left {
+    -webkit-transform: translateZ(-150px) rotateY(90deg);
+    transform: translateZ(-150px) rotateY(90deg);
+}
+
+.box.show-top {
+    -webkit-transform: translateZ(-100px) rotateX(-90deg);
+    transform: translateZ(-100px) rotateX(-90deg);
+}
+
+.box.show-bottom {
+    -webkit-transform: translateZ(-100px) rotateX(90deg);
+    transform: translateZ(-100px) rotateX(90deg);
+}
+
+.settings-not-square {
+    display: inline-block;
+}
+
+.box__face {
+    position: absolute;
+    border: 0.5px solid black;
+    text-align: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 2;
+}
+
+.box__face:not(.box__face--back) {
+    background-image: url("https://picsum.photos/700");
+}
+
+.box__text {
+    display: none;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    text-shadow: 3px 3px 5px black;
+}
+
+.box__face--inner-cover {
+    background-size: cover;
+}
+
+.box__face--inner-contain {
+    background-size: contain;
+}
+
+.box__face--outer-cover {
+    background-size: 500px auto;
+}
+
+.box__face--outer-contain {
+    background-size: auto 500px;
+}
+
+.box__face--blur {
+    -webkit-filter: blur(3px);
+    filter: blur(3px);
+    background-size: auto 500px;
+    display: none;
+    z-index: 1;
+}
+
+.box__face--front,
+.box__face--back {
+    width: 300px;
+    height: 300px;
+    line-height: 300px;
+}
+
+.box__face--right,
+.box__face--left {
+    width: 100px;
+    height: 300px;
+    left: 100px;
+    line-height: 300px;
+}
+
+.box__face--top,
+.box__face--bottom {
+    width: 300px;
+    height: 100px;
+    top: 50px;
+    line-height: 100px;
+}
+
+.box__face--front {
+    /* background: hsla(0, 76%, 69%, 0.7); */
+
+    background-position: 50%;
+}
+
+.box__face--right {
+    /* background: hsla(60, 100%, 50%, 0.7); */
+
+    background-position: calc(50% - 200px) 50%;
+}
+
+.box__face--back {
+    /*background: hsla(120, 100%, 50%, 0.7);*/
+}
+
+.box__face--left {
+    /* background: hsla(180, 100%, 50%, 0.7); */
+
+    background-position: calc(50% + 200px) 50%;
+}
+
+.box__face--top {
+    /* background: hsla(240, 100%, 50%, 0.7); */
+    background-position: 50% calc(50% + 200px);
+}
+
+.box__face--bottom {
+    /* background: hsla(300, 100%, 50%, 0.7); */
+    background-position: 50% calc(50% - 200px);
+}
+
+.box__face--front {
+    -webkit-transform: rotateY(0deg) translateZ(50px);
+    transform: rotateY(0deg) translateZ(50px);
+}
+
+.box__face--back {
+    -webkit-transform: rotateY(180deg) translateZ(50px);
+    transform: rotateY(180deg) translateZ(50px);
+}
+
+.box__face--right {
+    -webkit-transform: rotateY(90deg) translateZ(150px);
+    transform: rotateY(90deg) translateZ(150px);
+}
+
+.box__face--left {
+    -webkit-transform: rotateY(-90deg) translateZ(150px);
+    transform: rotateY(-90deg) translateZ(150px);
+}
+
+.box__face--top {
+    -webkit-transform: rotateX(90deg) translateZ(100px);
+    transform: rotateX(90deg) translateZ(100px);
+}
+
+.box__face--bottom {
+    -webkit-transform: rotateX(-90deg) translateZ(200px);
+    transform: rotateX(-90deg) translateZ(200px);
+}
+
+label {
+    margin-right: 10px;
+}
+
+#show-flat:checked ~ .container .box {
+    -webkit-transform-style: flat;
+    transform-style: flat;
+    -webkit-transform: translateZ(-150px);
+    transform: translateZ(-150px);
+}
+
+#show-flat:checked ~ .container .box__face--back {
+    display: none;
+}
+
+#show-flat:checked ~ .container .box__face--right {
+    -webkit-transform: rotateY(0deg) translateZ(0px) translateX(200px);
+    transform: rotateY(0deg) translateZ(0px) translateX(200px);
+}
+
+#show-flat:checked ~ .container .box__face--left {
+    -webkit-transform: rotateY(0deg) translateZ(0px) translateX(-200px);
+    transform: rotateY(0deg) translateZ(0px) translateX(-200px);
+}
+
+#show-flat:checked ~ .container .box__face--top {
+    -webkit-transform: rotateY(0deg) translateZ(0px) translateY(-150px);
+    transform: rotateY(0deg) translateZ(0px) translateY(-150px);
+}
+
+#show-flat:checked ~ .container .box__face--bottom {
+    -webkit-transform: rotateY(0deg) translateZ(0px) translateY(250px);
+    transform: rotateY(0deg) translateZ(0px) translateY(250px);
+}
+
+#enable-blur:checked ~ .container .box__face--blur {
+    display: block;
+}
+
+#enable-names:checked ~ .container .box__text {
+    display: block;
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        font-size: 12px;
+    }
+
+    .container {
+        margin: 0;
+        -webkit-transform: scale(0.8);
+        -ms-transform: scale(0.8);
+        transform: scale(0.8);
+    }
+
+    .scene {
+        width: 400px;
+        height: 400px;
+    }
+}
