@@ -1,4 +1,4 @@
-import BoxImage from "./components/box-image.js";
+import BoxImage from "../components/box-image.js";
 
 customElements.define("box-image", BoxImage);
 
