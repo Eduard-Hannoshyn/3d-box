@@ -41,7 +41,7 @@ document.getElementById("app").innerHTML = `
       <div class="box" id="box">
         <div class="box__face box__face--front box__face--blur"></div>
         <div class="box__face box__face--front"><span class="box__text">front</span></div>
-        <div class="box__face box__face--back box__face--blur">tt</div>
+        <div class="box__face box__face--back box__face--blur"></div>
         <div class="box__face box__face--back"><span class="box__text">back</span></div>
         <div class="box__face box__face--right box__face--blur"></div>
         <div class="box__face box__face--right"><span class="box__text">right</span></div>
@@ -114,7 +114,7 @@ function getImage(file) {
 
     return new Promise(function (resolve, reject) {
         image.src = imageUrl;
-        image.onload = function (t) {
+        image.onload = function () {
             resolve(image);
         };
         image.onerror = function () {

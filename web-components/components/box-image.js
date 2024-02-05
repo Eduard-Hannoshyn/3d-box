@@ -1,31 +1,15 @@
-export const BOX_TYPE = {
-    containInner: 'contain-inner',
-    coverInner: 'cover-inner',
-    containOuter: 'contain-outer',
-    coverOuter: 'cover-outer'
-}
+import BoxSide from "./box-side.js";
+import BoxBlur from "./box-blur.js";
 
-const MAP_ALBUM_IMAGE_CLASS = {
-    [BOX_TYPE.containInner]: 'box__face--inner-contain',
-    [BOX_TYPE.coverInner]: 'box__face--inner-cover',
-    [BOX_TYPE.containOuter]: 'box__face--outer-cover',
-    [BOX_TYPE.coverOuter]: 'box__face--outer-contain',
-}
-
-const MAP_PORTRAIT_IMAGE_CLASS = {
-    [BOX_TYPE.containInner]: 'box__face--inner-contain',
-    [BOX_TYPE.coverInner]: 'box__face--inner-cover',
-    [BOX_TYPE.containOuter]: 'box__face--outer-contain',
-    [BOX_TYPE.coverOuter]: 'box__face--outer-cover',
-}
+customElements.define("box-side", BoxSide);
+customElements.define("box-blur", BoxBlur);
 
 class BoxImage extends HTMLElement {
     #box = null;
     #scene = null;
-    #boxFace = null;
+    #boxSide = null;
+    #boxBlur = null;
 
-    #isPortraitImage = false;
-    #isAlbumImage = false;
     #isDragging = false;
     #startX = 0;
     #startY = 0;
@@ -96,136 +80,6 @@ class BoxImage extends HTMLElement {
                     pointer-events: none;
                 }
                 
-                .box__face {
-                    position: absolute;
-                    border: 0.5px solid black;
-                    text-align: center;
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    z-index: 2;
-                }
-                
-                .box__face:not(.box__face--back) {
-                    background-image: url("https://picsum.photos/700");
-                }
-                
-                .box__text {
-                    display: none;
-                    color: white;
-                    font-size: 40px;
-                    font-weight: bold;
-                    text-shadow: 3px 3px 5px black;
-                }
-                
-                .box__face--inner-cover {
-                    background-size: cover;
-                }
-                
-                .box__face--inner-contain {
-                    background-size: contain;
-                }
-                
-                .box__face--outer-cover {
-                    background-size: 500px auto;
-                }
-                
-                .box__face--outer-contain {
-                    background-size: auto 500px;
-                }
-                
-                .box__face--blur {
-                    -webkit-filter: blur(3px);
-                    filter: blur(3px);
-                    background-size: auto 500px;
-                    display: none;
-                    z-index: 1;
-                }
-                
-                .box__face--front,
-                .box__face--back {
-                    width: 300px;
-                    height: 300px;
-                    line-height: 300px;
-                }
-                
-                .box__face--right,
-                .box__face--left {
-                    width: 100px;
-                    height: 300px;
-                    left: 100px;
-                    line-height: 300px;
-                }
-                
-                .box__face--top,
-                .box__face--bottom {
-                    width: 300px;
-                    height: 100px;
-                    top: 50px;
-                    line-height: 100px;
-                }
-                
-                .box__face--front {
-                    /* background: hsla(0, 76%, 69%, 0.7); */
-                
-                    background-position: 50%;
-                }
-                
-                .box__face--right {
-                    /* background: hsla(60, 100%, 50%, 0.7); */
-                
-                    background-position: calc(50% - 200px) 50%;
-                }
-                
-                .box__face--back {
-                    /*background: hsla(120, 100%, 50%, 0.7);*/
-                }
-                
-                .box__face--left {
-                    /* background: hsla(180, 100%, 50%, 0.7); */
-                
-                    background-position: calc(50% + 200px) 50%;
-                }
-                
-                .box__face--top {
-                    /* background: hsla(240, 100%, 50%, 0.7); */
-                    background-position: 50% calc(50% + 200px);
-                }
-                
-                .box__face--bottom {
-                    /* background: hsla(300, 100%, 50%, 0.7); */
-                    background-position: 50% calc(50% - 200px);
-                }
-                
-                .box__face--front {
-                    -webkit-transform: rotateY(0deg) translateZ(50px);
-                    transform: rotateY(0deg) translateZ(50px);
-                }
-                
-                .box__face--back {
-                    -webkit-transform: rotateY(180deg) translateZ(50px);
-                    transform: rotateY(180deg) translateZ(50px);
-                }
-                
-                .box__face--right {
-                    -webkit-transform: rotateY(90deg) translateZ(150px);
-                    transform: rotateY(90deg) translateZ(150px);
-                }
-                
-                .box__face--left {
-                    -webkit-transform: rotateY(-90deg) translateZ(150px);
-                    transform: rotateY(-90deg) translateZ(150px);
-                }
-                
-                .box__face--top {
-                    -webkit-transform: rotateX(90deg) translateZ(100px);
-                    transform: rotateX(90deg) translateZ(100px);
-                }
-                
-                .box__face--bottom {
-                    -webkit-transform: rotateX(-90deg) translateZ(200px);
-                    transform: rotateX(-90deg) translateZ(200px);
-                }
-
                 .box--flat {
                     -webkit-transform-style: flat;
                     transform-style: flat;
@@ -233,36 +87,11 @@ class BoxImage extends HTMLElement {
                     transform: translateZ(-150px);
                 }
                 
-                .box--flat .box__face--back {
-                    display: none;
-                }
-                
-                .box--flat .box__face--right {
-                    -webkit-transform: rotateY(0deg) translateZ(0px) translateX(200px);
-                    transform: rotateY(0deg) translateZ(0px) translateX(200px);
-                }
-                
-                .box--flat .box__face--left {
-                    -webkit-transform: rotateY(0deg) translateZ(0px) translateX(-200px);
-                    transform: rotateY(0deg) translateZ(0px) translateX(-200px);
-                }
-                
-                .box--flat .box__face--top {
-                    -webkit-transform: rotateY(0deg) translateZ(0px) translateY(-150px);
-                    transform: rotateY(0deg) translateZ(0px) translateY(-150px);
-                }
-                
-                .box--flat .box__face--bottom {
-                    -webkit-transform: rotateY(0deg) translateZ(0px) translateY(250px);
-                    transform: rotateY(0deg) translateZ(0px) translateY(250px);
-                }
-                
-               .box--blur .box__face--blur {
-                    display: block;
-                }
-
-                .box--names .box__text {
-                    display: block;
+                .box__text {
+                    color: white;
+                    font-size: 40px;
+                    font-weight: bold;
+                    text-shadow: 3px 3px 5px black;
                 }
                 
                 @media only screen and (max-width: 600px) {
@@ -274,25 +103,38 @@ class BoxImage extends HTMLElement {
             </style>
             <div class="scene item-centered" id="scene">
                 <div class="box" id="box">
-                    <div class="box__face box__face--front box__face--blur"></div>
-                    <div class="box__face box__face--front"><span class="box__text">front</span></div>
-                    <div class="box__face box__face--back box__face--blur">tt</div>
-                    <div class="box__face box__face--back"><span class="box__text">back</span></div>
-                    <div class="box__face box__face--right box__face--blur"></div>
-                    <div class="box__face box__face--right"><span class="box__text">right</span></div>
-                    <div class="box__face box__face--left box__face--blur"></div>
-                    <div class="box__face box__face--left"><span class="box__text">left</span></div>
-                    <div class="box__face box__face--top box__face--blur"></div>
-                    <div class="box__face box__face--top"><span class="box__text">top</span></div>
-                    <div class="box__face box__face--bottom box__face--blur"></div>
-                    <div class="box__face box__face--bottom"><span class="box__text">bottom</span></div>
+                    <box-blur id="box-blur" box-position="front"></box-blur>
+                    <box-side id="box-side" box-position="front">
+                        <span class="box__text">front</span>
+                    </box-side>
+                    <box-blur id="box-blur" box-position="back"></box-blur>
+                    <box-side id="box-side" box-position="back">
+                        <span class="box__text">back</span>
+                    </box-side>
+                    <box-blur id="box-blur" box-position="right"></box-blur>
+                    <box-side id="box-side" box-position="right">
+                        <span class="box__text">right</span>
+                    </box-side>
+                    <box-blur id="box-blur" box-position="left"></box-blur>
+                     <box-side id="box-side" box-position="left">
+                        <span class="box__text">left</span>
+                    </box-side>
+                    <box-blur id="box-blur" box-position="top"></box-blur>
+                    <box-side id="box-side" box-position="top">
+                        <span class="box__text">top</span>
+                    </box-side>
+                    <box-blur id="box-blur" box-position="bottom"></box-blur>
+                    <box-side id="box-side" box-position="bottom">
+                        <span class="box__text">bottom</span>
+                    </box-side>
                 </div>
             </div>
         `;
 
         this.#box = shadow.getElementById("box");
         this.#scene = shadow.getElementById("scene");
-        this.#boxFace = shadow.querySelectorAll(".box__face:not(.box__face--back)");
+        this.#boxSide = shadow.querySelectorAll("#box-side");
+        this.#boxBlur = shadow.querySelectorAll("#box-blur");
     }
 
     static get observedAttributes() {
@@ -302,12 +144,12 @@ class BoxImage extends HTMLElement {
     attributeChangedCallback(name, oldValue, newValue) {
         const attributeCallback = this.#mapAttributesCallback(name);
 
-        attributeCallback(newValue);
+        attributeCallback?.(newValue);
     }
 
     #mapAttributesCallback(name) {
         const attributesCallback = {
-            'image-url': this.imageUrlAttributeCallback,
+            'image-url': this.#imageUrlAttributeCallback,
             'show-flat': this.#showFlatAttributeCallback,
             'enable-blur': this.#enableBlurAttributeCallback,
             'enable-names': this.#enableNamesAttributeCallback,
@@ -315,95 +157,45 @@ class BoxImage extends HTMLElement {
             'blur-offset': this.#blurOffsetAttributeCallback,
         }
 
-        return attributesCallback[name].bind(this);
+        return attributesCallback[name]?.bind(this);
     }
 
-    #getImage(value) {
-        const image = new Image();
-
-        return new Promise((resolve, reject) => {
-            image.src = value;
-            image.onload = function (t) {
-                resolve(image);
-            };
-            image.onerror = function () {
-                reject('Sorry something went wrong');
-            }
-        })
+    #imageUrlAttributeCallback(value) {
+        [...this.#boxSide, ...this.#boxBlur].forEach((element) => {
+            element.setAttribute('image-url', value);
+        });
     }
 
-    imageUrlAttributeCallback(value) {
-        this.#getImage(value)
-            .then(({src, width, height}) => {
-                    this.#isAlbumImage = width > height;
-                    this.#isPortraitImage = width < height;
+    #showFlatAttributeCallback() {
+        this.#box.classList.toggle('box--flat');
 
-                    [...this.#boxFace].forEach((element) => {
-                        element.style.backgroundImage = `url('${src}')`;
-                    });
-
-                    this.#boxTypeAttributeCallback(this.getAttribute('box-type'));
-                    this.#blurOffsetAttributeCallback(this.getAttribute('blur-offset'));
-                }
-            ).catch((message) => {
-            console.error(message);
-        })
+        [...this.#boxSide, ...this.#boxBlur].forEach((element) => {
+            element.toggleAttribute('show-flat');
+        });
     }
 
-    #showFlatAttributeCallback(value) {
-        this.#toggleBoxClassByAttributeValue('box--flat', value);
+    #enableNamesAttributeCallback() {
+        [...this.#boxSide].forEach((element) => {
+            element.toggleAttribute('enable-names');
+        });
     }
 
-    #enableBlurAttributeCallback(value) {
-        this.#toggleBoxClassByAttributeValue('box--blur', value);
+    #enableBlurAttributeCallback() {
+        [...this.#boxBlur].forEach((element) => {
+            element.toggleAttribute('enable-blur');
+        });
     }
 
-    #enableNamesAttributeCallback(value) {
-        this.#toggleBoxClassByAttributeValue('box--names', value);
-    }
-
-    #toggleBoxClassByAttributeValue(className, value) {
-        if (value !== null) {
-            this.#box.classList.add(className);
-        } else {
-            this.#box.classList.remove(className);
-        }
-    }
-
-    #resetPrevBoxTypeClass(element) {
-        Object.values({...MAP_ALBUM_IMAGE_CLASS, ...MAP_PORTRAIT_IMAGE_CLASS}).forEach((className) => {
-            const isContains = element.classList.contains(className);
-
-            if (isContains) {
-                element.classList.remove(className);
-            }
-        })
-    }
 
     #boxTypeAttributeCallback(value) {
-        [...this.#boxFace].forEach((element) => {
-            const isBlurElement = element.classList.contains('box__face--blur');
-
-            if (!isBlurElement) {
-                let boxTypeClass = this.#isAlbumImage
-                    ? MAP_ALBUM_IMAGE_CLASS[value]
-                    : MAP_PORTRAIT_IMAGE_CLASS[value];
-
-                this.#resetPrevBoxTypeClass(element);
-                element.classList.add(boxTypeClass);
-            }
+        [...this.#boxSide].forEach((element) => {
+            element.setAttribute('box-type', value);
         });
     }
 
     #blurOffsetAttributeCallback(value) {
-        [...this.#boxFace].forEach((element) => {
-            const isBlurElement = element.classList.contains('box__face--blur');
-
-            if (isBlurElement) {
-                element.style.backgroundSize = this.#isAlbumImage
-                    ? `auto ${value}px`
-                    : `${value}px auto`;
-            }
+        [...this.#boxBlur].forEach((element) => {
+            element.setAttribute('blur-offset', value);
         });
     }
 
