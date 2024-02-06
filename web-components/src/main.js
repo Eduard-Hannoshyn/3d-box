@@ -24,36 +24,21 @@ function handleImageChange({currentTarget}) {
     }
 }
 
-function handleFlatChange({currentTarget}) {
-    if (currentTarget.checked) {
-        boxImage.setAttribute('show-flat', true);
-        boxImage1.setAttribute('show-flat', true);
-    } else {
-        boxImage.removeAttribute('show-flat');
-        boxImage1.removeAttribute('show-flat');
-    }
+function handleFlatChange() {
+    boxImage.toggleAttribute('show-flat');
+    boxImage1.toggleAttribute('show-flat');
 }
 
-function handleNamesChange({currentTarget}) {
-    if (currentTarget.checked) {
-        boxImage.setAttribute('enable-names', true);
-        boxImage1.setAttribute('enable-names', true);
-    } else {
-        boxImage.removeAttribute('enable-names');
-        boxImage1.removeAttribute('enable-names');
-    }
+function handleNamesChange() {
+    boxImage.toggleAttribute('enable-names');
+    boxImage1.toggleAttribute('enable-names');
 }
 
-function handleBlurChange({currentTarget}) {
-    if (currentTarget.checked) {
-        blurRange.removeAttribute('disabled');
-        boxImage.setAttribute('enable-blur', true);
-        boxImage1.setAttribute('enable-blur', true);
-    } else {
-        blurRange.setAttribute('disabled', true);
-        boxImage.removeAttribute('enable-blur');
-        boxImage1.removeAttribute('enable-blur');
-    }
+function handleBlurChange() {
+    blurRange.toggleAttribute('disabled');
+    boxImage.toggleAttribute('enable-blur');
+    boxImage1.toggleAttribute('enable-blur');
+
 }
 
 function handleBoxTypeChange({currentTarget}) {

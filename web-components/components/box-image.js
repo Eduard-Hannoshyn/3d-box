@@ -80,7 +80,7 @@ class BoxImage extends HTMLElement {
                     pointer-events: none;
                 }
                 
-                .box--flat {
+                :host([show-flat]) .box {
                     -webkit-transform-style: flat;
                     transform-style: flat;
                     -webkit-transform: translateZ(-150px);
@@ -167,8 +167,6 @@ class BoxImage extends HTMLElement {
     }
 
     #showFlatAttributeCallback() {
-        this.#box.classList.toggle('box--flat');
-
         [...this.#boxSide, ...this.#boxBlur].forEach((element) => {
             element.toggleAttribute('show-flat');
         });
