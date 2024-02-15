@@ -184,7 +184,6 @@ class BoxImage extends HTMLElement {
         });
     }
 
-
     #boxTypeAttributeCallback(value) {
         [...this.#boxSide].forEach((element) => {
             element.setAttribute('box-type', value);
