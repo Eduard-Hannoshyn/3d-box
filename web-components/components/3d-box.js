@@ -2,8 +2,6 @@ const ALLOWED_CHILD_ELEMENTS = ['box-image'];
 
 class ThreeDBox extends HTMLElement {
     #boxImages = null;
-    #boxImage = null;
-    #boxImage1 = null;
     #imagePreview = null;
     #flatCheckbox = null;
     #namesCheckbox = null;
@@ -87,8 +85,6 @@ class ThreeDBox extends HTMLElement {
             this.#boxImages = childElements[ALLOWED_CHILD_ELEMENTS[0]];
         }
 
-        this.#boxImage = shadow.getElementById("box-image");
-        this.#boxImage1 = shadow.getElementById("box-image-1");
         this.#imagePreview = shadow.getElementById("image-preview");
         this.#flatCheckbox = shadow.getElementById('show-flat');
         this.#namesCheckbox = shadow.getElementById('enable-names');

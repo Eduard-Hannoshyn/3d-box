@@ -1,4 +1,5 @@
 import BoxFace from "./box-face.js";
+
 class BoxSide extends BoxFace {
     render() {
         const shadow = super.render();
