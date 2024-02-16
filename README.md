@@ -1,7 +1,7 @@
 # 3D Box Viewer
 
 This is a simple 3D box viewer implemented using HTML, CSS, and JavaScript. It allows users to view images on different faces of a 3D box and manipulate its appearance using various settings.
-The web-components folder ([web components demo](https://eduard-hannoshyn.github.io/3d-box-viewer/base/)) implements the same functionality as in the base folder ([base demo](https://eduard-hannoshyn.github.io/3d-box-viewer/web-components/)), but using web components.
+The web-components folder ([web components demo](https://eduard-hannoshyn.github.io/3d-box-viewer/web-components/)) implements the same functionality as in the base folder ([base demo](https://eduard-hannoshyn.github.io/3d-box-viewer/base/)), but using web components.
 
 ## Features
 
