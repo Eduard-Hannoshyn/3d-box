@@ -27,10 +27,6 @@ The web-components folder ([web components demo](https://eduard-hannoshyn.github
 - **Save Settings**: Click the "Save" button to download the current settings as a JSON file.
 - **Show Settings**: Click the "Show" button to display the current settings in a readable format.
 
-## Contributing
-
-Contributions are welcome! If you have any suggestions, improvements, or bug fixes, feel free to open an issue or create a pull request.
-
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
