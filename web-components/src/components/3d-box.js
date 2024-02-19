@@ -183,8 +183,16 @@ class ThreeDBox extends HTMLElement {
 
     getChildElements(shadow) {
         const elements = shadow.querySelector('slot').assignedElements();
+        // return Object.groupBy(elements, ({tagName}) => tagName.toLowerCase());
 
-        return Object.groupBy(elements, ({tagName}) => tagName.toLowerCase());
+        return elements.reduce((acc, element) => {
+            const tagName = element.tagName.toLowerCase();
+
+            return {
+                ...acc,
+                [tagName]: [...(acc[tagName] ?? []), element]
+            }
+        }, {});
     }
 
     checkIsAllowedChildElements(elements) {
