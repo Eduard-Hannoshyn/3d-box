@@ -34,21 +34,21 @@ class BoxBlur extends BoxFace {
         attributeCallback?.(newValue);
     }
 
-    imageUrlAttributeCallback(value) {
-        super.imageUrlAttributeCallback(value).then(() => {
-            this.#blurOffsetAttributeCallback(this.getAttribute('blur-offset'));
-        })
-    }
-
     #mapAttributesCallback(name) {
         const attributesCallback = {
-            'blur-offset': this.#blurOffsetAttributeCallback,
+            'blur-offset': this.blurOffsetAttributeCallback,
         }
 
         return attributesCallback[name]?.bind(this);
     }
 
-    #blurOffsetAttributeCallback(value) {
+    imageUrlAttributeCallback(value) {
+        super.imageUrlAttributeCallback(value).then(() => {
+            this.blurOffsetAttributeCallback(this.getAttribute('blur-offset'));
+        })
+    }
+
+    blurOffsetAttributeCallback(value) {
         this.style.backgroundSize = this.isAlbumImage
             ? `auto ${value}px`
             : `${value}px auto`;

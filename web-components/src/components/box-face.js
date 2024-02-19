@@ -25,7 +25,7 @@ class BoxFace extends HTMLElement {
         return attributesCallback[name]?.bind(this);
     }
 
-    #getImage(value) {
+    getImage(value) {
         const image = new Image();
 
         return new Promise((resolve, reject) => {
@@ -40,7 +40,7 @@ class BoxFace extends HTMLElement {
     }
 
     imageUrlAttributeCallback(value) {
-        return this.#getImage(value)
+        return this.getImage(value)
             .then(({src, width, height}) => {
                     const image = {src, width, height};
                     this.isAlbumImage = width > height;
