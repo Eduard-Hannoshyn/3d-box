@@ -223,16 +223,11 @@ class BoxImage extends HTMLElement {
     }
 
     handleMouseup() {
-        return () => {
-            this.#isDragging = false;
-        }
-
+        this.#isDragging = false;
     }
 
     handleMouseout() {
-        return () => {
-            this.#isDragging = false;
-        }
+        this.#isDragging = false;
     }
 }
 
