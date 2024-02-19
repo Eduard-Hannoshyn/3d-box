@@ -19,24 +19,29 @@ class BoxImage extends HTMLElement {
     constructor() {
         super();
 
-        this.#render();
+        this.handleMousedown = this.handleMousedown.bind(this);
+        this.handleMousemove = this.handleMousemove.bind(this);
+        this.handleMouseup = this.handleMouseup.bind(this);
+        this.handleMouseout = this.handleMouseout.bind(this);
+
+        this.render();
     }
 
     connectedCallback() {
-        this.#scene.addEventListener("pointerdown", this.#handleMousedown());
-        this.#scene.addEventListener("pointermove", this.#handleMousemove());
-        this.#scene.addEventListener("pointerout", this.#handleMouseup());
-        this.#scene.addEventListener("pointerup", this.#handleMouseout());
+        this.#scene.addEventListener("pointerdown", this.handleMousedown);
+        this.#scene.addEventListener("pointermove", this.handleMousemove);
+        this.#scene.addEventListener("pointerout", this.handleMouseup);
+        this.#scene.addEventListener("pointerup", this.handleMouseout);
     }
 
     disconnectedCallback() {
-        this.#scene.removeEventListener("pointerdown", this.#handleMousedown());
-        this.#scene.removeEventListener("pointermove", this.#handleMousemove());
-        this.#scene.removeEventListener("pointerout", this.#handleMouseup());
-        this.#scene.removeEventListener("pointerup", this.#handleMouseout());
+        this.#scene.removeEventListener("pointerdown", this.handleMousedown);
+        this.#scene.removeEventListener("pointermove", this.handleMousemove);
+        this.#scene.removeEventListener("pointerout", this.handleMouseup);
+        this.#scene.removeEventListener("pointerup", this.handleMouseout);
     }
 
-    #render() {
+    render() {
         const shadow = this.attachShadow({mode: 'closed'});
         shadow.innerHTML = `
             <style>
@@ -142,94 +147,89 @@ class BoxImage extends HTMLElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        const attributeCallback = this.#mapAttributesCallback(name);
+        const attributeCallback = this.mapAttributesCallback(name);
 
         attributeCallback?.(newValue);
     }
 
-    #mapAttributesCallback(name) {
+    mapAttributesCallback(name) {
         const attributesCallback = {
-            'image-url': this.#imageUrlAttributeCallback,
-            'show-flat': this.#showFlatAttributeCallback,
-            'enable-blur': this.#enableBlurAttributeCallback,
-            'enable-names': this.#enableNamesAttributeCallback,
-            'box-type': this.#boxTypeAttributeCallback,
-            'blur-offset': this.#blurOffsetAttributeCallback,
+            'image-url': this.imageUrlAttributeCallback,
+            'show-flat': this.showFlatAttributeCallback,
+            'enable-blur': this.enableBlurAttributeCallback,
+            'enable-names': this.enableNamesAttributeCallback,
+            'box-type': this.boxTypeAttributeCallback,
+            'blur-offset': this.blurOffsetAttributeCallback,
         }
 
         return attributesCallback[name]?.bind(this);
     }
 
-    #imageUrlAttributeCallback(value) {
+    imageUrlAttributeCallback(value) {
         [...this.#boxSide, ...this.#boxBlur].forEach((element) => {
             element.setAttribute('image-url', value);
         });
     }
 
-    #showFlatAttributeCallback() {
+    showFlatAttributeCallback() {
         [...this.#boxSide, ...this.#boxBlur].forEach((element) => {
             element.toggleAttribute('show-flat');
         });
     }
 
-    #enableNamesAttributeCallback() {
+    enableNamesAttributeCallback() {
         [...this.#boxSide].forEach((element) => {
             element.toggleAttribute('enable-names');
         });
     }
 
-    #enableBlurAttributeCallback() {
+    enableBlurAttributeCallback() {
         [...this.#boxBlur].forEach((element) => {
             element.toggleAttribute('enable-blur');
         });
     }
 
-    #boxTypeAttributeCallback(value) {
+    boxTypeAttributeCallback(value) {
         [...this.#boxSide].forEach((element) => {
             element.setAttribute('box-type', value);
         });
     }
 
-    #blurOffsetAttributeCallback(value) {
+    blurOffsetAttributeCallback(value) {
         [...this.#boxBlur].forEach((element) => {
             element.setAttribute('blur-offset', value);
         });
     }
 
-    #handleMousedown() {
-        return (e) => {
-            this.#isDragging = true;
-            this.#startX = e.clientX;
-            this.#startY = e.clientY;
-        }
+    handleMousedown(e) {
+        this.#isDragging = true;
+        this.#startX = e.clientX;
+        this.#startY = e.clientY;
     }
 
-    #handleMousemove() {
-        return (e) => {
-            if (!this.#isDragging) return;
+    handleMousemove(e) {
+        if (!this.#isDragging) return;
 
-            const deltaX = e.clientX - this.#startX;
-            const deltaY = e.clientY - this.#startY;
+        const deltaX = e.clientX - this.#startX;
+        const deltaY = e.clientY - this.#startY;
 
-            this.#rotationY += deltaX / 3;
-            this.#rotationX -= deltaY / 3;
+        this.#rotationY += deltaX / 3;
+        this.#rotationX -= deltaY / 3;
 
-            this.#box.style.transform = `translateZ(-150px) rotateX(${this.#rotationX}deg) rotateY(${this.#rotationY}deg)`;
+        this.#box.style.transform = `translateZ(-150px) rotateX(${this.#rotationX}deg) rotateY(${this.#rotationY}deg)`;
 
-            this.#startX = e.clientX;
-            this.#startY = e.clientY;
-        }
-
+        this.#startX = e.clientX;
+        this.#startY = e.clientY;
     }
 
-    #handleMouseup() {
+    handleMouseup() {
         return () => {
             this.#isDragging = false;
         }
 
     }
 
-    #handleMouseout() {
+    handleMouseout() {
         return () => {
             this.#isDragging = false;
         }

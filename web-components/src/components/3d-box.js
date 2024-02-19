@@ -15,6 +15,15 @@ class ThreeDBox extends HTMLElement {
     constructor() {
         super();
 
+        this.handleImageChange = this.handleImageChange.bind(this);
+        this.handleFlatChange = this.handleFlatChange.bind(this);
+        this.handleNamesChange = this.handleNamesChange.bind(this);
+        this.handleBlurChange = this.handleBlurChange.bind(this);
+        this.handleBoxTypeChange = this.handleBoxTypeChange.bind(this);
+        this.handleBlurOffsetChange = this.handleBlurOffsetChange.bind(this);
+        this.handleShowSettingsClick = this.handleShowSettingsClick.bind(this);
+        this.handleSaveSettingsClick = this.handleSaveSettingsClick.bind(this);
+
         this.render();
     }
 
@@ -78,8 +87,8 @@ class ThreeDBox extends HTMLElement {
             <div id="settings-container"></div>
         `;
 
-        const childElements = this.#getChildElements(shadow);
-        const isAllowedChildElements = this.#checkIsAllowedChildElements(childElements);
+        const childElements = this.getChildElements(shadow);
+        const isAllowedChildElements = this.checkIsAllowedChildElements(childElements);
 
         if (isAllowedChildElements) {
             this.#boxImages = childElements[ALLOWED_CHILD_ELEMENTS[0]];
@@ -103,93 +112,82 @@ class ThreeDBox extends HTMLElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        const attributeCallback = this.#mapAttributesCallback(name);
+        const attributeCallback = this.mapAttributesCallback(name);
 
         attributeCallback?.(newValue);
     }
 
-    #mapAttributesCallback(name) {
+    mapAttributesCallback(name) {
         const attributesCallback = {
-            'show-flat': this.#showFlatAttributeCallback,
-            'enable-blur': this.#enableBlurAttributeCallback,
-            'enable-names': this.#enableNamesAttributeCallback,
-            'box-type': this.#boxTypeAttributeCallback,
-            'blur-offset': this.#blurOffsetAttributeCallback,
+            'show-flat': this.showFlatAttributeCallback,
+            'enable-blur': this.enableBlurAttributeCallback,
+            'enable-names': this.enableNamesAttributeCallback,
+            'box-type': this.boxTypeAttributeCallback,
+            'blur-offset': this.blurOffsetAttributeCallback,
         }
 
         return attributesCallback[name]?.bind(this);
     }
 
-    #showFlatAttributeCallback() {
+    showFlatAttributeCallback() {
         this.#flatCheckbox.toggleAttribute('checked');
 
-        this.#boxImages.forEach((boxImage) => {
-            boxImage.toggleAttribute('show-flat');
-        });
+        this.handleFlatChange();
     }
 
-    #enableNamesAttributeCallback() {
+    enableNamesAttributeCallback() {
         this.#namesCheckbox.toggleAttribute('checked');
 
-        this.#boxImages.forEach((boxImage) => {
-            boxImage.toggleAttribute('enable-names');
-        });
+        this.handleNamesChange();
     }
 
-    #enableBlurAttributeCallback() {
+    enableBlurAttributeCallback() {
         this.#blurCheckbox.toggleAttribute('checked');
-        this.#blurRange.toggleAttribute('disabled');
 
-        this.#boxImages.forEach((boxImage) => {
-            boxImage.toggleAttribute('enable-blur');
-        });
+        this.handleBlurChange();
     }
 
-    #boxTypeAttributeCallback(value) {
+    boxTypeAttributeCallback(value) {
         this.#boxType.value = value;
 
-        this.#boxImages.forEach((boxImage) => {
-            boxImage.setAttribute('box-type', value);
-        });
+        this.handleBoxTypeChange({currentTarget: this.#boxType})
     }
 
-    #blurOffsetAttributeCallback(value) {
+    blurOffsetAttributeCallback(value) {
         this.#blurRange.value = value;
 
-        this.#boxImages.forEach((boxImage) => {
-            boxImage.setAttribute('blur-offset', value);
-        });
+        this.handleBlurOffsetChange({currentTarget: this.#blurCheckbox})
     }
 
     connectedCallback() {
-        this.#imagePreview.addEventListener("change", this.#handleImageChange());
-        this.#flatCheckbox.addEventListener("change", this.#handleFlatChange());
-        this.#namesCheckbox.addEventListener("change", this.#handleNamesChange());
-        this.#blurCheckbox.addEventListener("change", this.#handleBlurChange());
-        this.#boxType.addEventListener("change", this.#handleBoxTypeChange());
-        this.#blurRange.addEventListener("change", this.#handleBlurOffsetChange());
-        this.#showButton.addEventListener("click", this.#handleShowSettingsClick());
-        this.#saveButton.addEventListener("click", this.#handleSaveSettingsClick());
+        this.#imagePreview.addEventListener("change", this.handleImageChange);
+        this.#flatCheckbox.addEventListener("change", this.handleFlatChange);
+        this.#namesCheckbox.addEventListener("change", this.handleNamesChange);
+        this.#blurCheckbox.addEventListener("change", this.handleBlurChange);
+        this.#boxType.addEventListener("change", this.handleBoxTypeChange);
+        this.#blurRange.addEventListener("change", this.handleBlurOffsetChange);
+        this.#showButton.addEventListener("click", this.handleShowSettingsClick);
+        this.#saveButton.addEventListener("click", this.handleSaveSettingsClick);
     }
 
     disconnectedCallback() {
-        this.#imagePreview.removeEventListener("change", this.#handleImageChange());
-        this.#flatCheckbox.removeEventListener("change", this.#handleFlatChange());
-        this.#namesCheckbox.removeEventListener("change", this.#handleNamesChange());
-        this.#blurCheckbox.removeEventListener("change", this.#handleBlurChange());
-        this.#boxType.removeEventListener("change", this.#handleBoxTypeChange());
-        this.#blurRange.removeEventListener("change", this.#handleBlurOffsetChange());
-        this.#showButton.removeEventListener("click", this.#handleShowSettingsClick());
-        this.#saveButton.removeEventListener("click", this.#handleSaveSettingsClick());
+        this.#imagePreview.removeEventListener("change", this.handleImageChange);
+        this.#flatCheckbox.removeEventListener("change", this.handleFlatChange);
+        this.#namesCheckbox.removeEventListener("change", this.handleNamesChange);
+        this.#blurCheckbox.removeEventListener("change", this.handleBlurChange);
+        this.#boxType.removeEventListener("change", this.handleBoxTypeChange);
+        this.#blurRange.removeEventListener("change", this.handleBlurOffsetChange);
+        this.#showButton.removeEventListener("click", this.handleShowSettingsClick);
+        this.#saveButton.removeEventListener("click", this.handleSaveSettingsClick);
     }
 
-    #getChildElements(shadow) {
+    getChildElements(shadow) {
         const elements = shadow.querySelector('slot').assignedElements();
 
         return Object.groupBy(elements, ({tagName}) => tagName.toLowerCase());
     }
 
-    #checkIsAllowedChildElements(elements) {
+    checkIsAllowedChildElements(elements) {
         return Object.keys(elements).every((tagName) => {
             const isAllowed = ALLOWED_CHILD_ELEMENTS.includes(tagName);
 
@@ -201,70 +199,51 @@ class ThreeDBox extends HTMLElement {
         });
     }
 
-    #handleImageChange() {
-        return ({currentTarget}) => {
-            const [file] = currentTarget.files;
+    handleImageChange({currentTarget}) {
+        const [file] = currentTarget.files;
 
-            if (file) {
-                const imageUrl = URL.createObjectURL(file);
-
-                this.#boxImages.forEach((boxImage) => {
-                    boxImage.setAttribute('image-url', imageUrl);
-                })
-            }
-        }
-    }
-
-    #handleFlatChange() {
-        return () => {
-            this.#boxImages.forEach((boxImage) => {
-                boxImage.toggleAttribute('show-flat');
-            })
-        }
-
-    }
-
-    #handleNamesChange() {
-        return () => {
-            this.#boxImages.forEach((boxImage) => {
-                boxImage.toggleAttribute('enable-names');
-            })
-        }
-
-
-    }
-
-    #handleBlurChange() {
-        return () => {
-            this.#blurRange.toggleAttribute('disabled');
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
 
             this.#boxImages.forEach((boxImage) => {
-                boxImage.toggleAttribute('enable-blur');
-            })
-        }
-
-    }
-
-    #handleBoxTypeChange() {
-        return ({currentTarget}) => {
-            const selectedOption = currentTarget.options[currentTarget.selectedIndex];
-
-            this.#boxImages.forEach((boxImage) => {
-                boxImage.setAttribute('box-type', selectedOption.value);
+                boxImage.setAttribute('image-url', imageUrl);
             })
         }
     }
 
-    #handleBlurOffsetChange() {
-        return ({currentTarget}) => {
-            this.#boxImages.forEach((boxImage) => {
-                boxImage.setAttribute('blur-offset', currentTarget.value);
-            })
-        }
-
+    handleFlatChange() {
+        this.#boxImages.forEach((boxImage) => {
+            boxImage.toggleAttribute('show-flat');
+        })
     }
 
-    #getSettings() {
+    handleNamesChange() {
+        this.#boxImages.forEach((boxImage) => {
+            boxImage.toggleAttribute('enable-names');
+        })
+    }
+
+    handleBlurChange() {
+        this.#blurRange.toggleAttribute('disabled');
+
+        this.#boxImages.forEach((boxImage) => {
+            boxImage.toggleAttribute('enable-blur');
+        })
+    }
+
+    handleBoxTypeChange({currentTarget}) {
+        this.#boxImages.forEach((boxImage) => {
+            boxImage.setAttribute('box-type', currentTarget.value);
+        })
+    }
+
+    handleBlurOffsetChange({currentTarget}) {
+        this.#boxImages.forEach((boxImage) => {
+            boxImage.setAttribute('blur-offset', currentTarget.value);
+        })
+    }
+
+    getSettings() {
         const settings = {
             filePath: this.#imagePreview.value || 'default',
             showFlat: this.#flatCheckbox.checked,
@@ -277,26 +256,21 @@ class ThreeDBox extends HTMLElement {
         return JSON.stringify(settings, null, 2);
     }
 
-    #handleShowSettingsClick() {
-        return () => {
-            this.#settingsContainer.innerHTML = `<pre>${this.#getSettings()}</pre>`;
-            this.#settingsContainer.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
-        }
-
+    handleShowSettingsClick() {
+        this.#settingsContainer.innerHTML = `<pre>${this.getSettings()}</pre>`;
+        this.#settingsContainer.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
     }
 
-    #handleSaveSettingsClick() {
-        return () => {
-            const blob = new Blob([this.#getSettings()], {type: 'application/json'});
-            const downloadLink = document.createElement('a');
+    handleSaveSettingsClick() {
+        const blob = new Blob([this.getSettings()], {type: 'application/json'});
+        const downloadLink = document.createElement('a');
 
-            downloadLink.href = URL.createObjectURL(blob);
-            downloadLink.download = `${this.#imagePreview.value || 'settings'}.json`;
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = `${this.#imagePreview.value || 'settings'}.json`;
 
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-        }
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
     }
 }
 
