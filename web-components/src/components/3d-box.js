@@ -156,7 +156,7 @@ class ThreeDBox extends HTMLElement {
     blurOffsetAttributeCallback(value) {
         this.#blurRange.value = value;
 
-        this.handleBlurOffsetChange({currentTarget: this.#blurCheckbox})
+        this.handleBlurOffsetChange({currentTarget: this.#blurRange})
     }
 
     connectedCallback() {
